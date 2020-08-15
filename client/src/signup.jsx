@@ -1,99 +1,102 @@
-// SignUp.js
-import React from 'react';
-import {
-  View,
-  Button,
-  TextInput,
-  StyleSheet
-} from 'react-native';
+import React,{Component} from "react";
+import 'semantic-ui-css/semantic.min.css'
+export default class Registration extends Component{
+    constructor(props){
+        super(props);
+        this.state = {
+            firstname: "",
+            lastname:"",
+            age: "",
+            email: "",
+            password: "",
+            password_confirmation: "",
+            registrationErrors:""
 
-export default class SignUp extends React.Component {
-  state = {
-    firstname: '',lastname:'',username: '', password: '', email: '', phone_number: ''
-  }
-  onChangeText = (key, val) => {
-    this.setState({ [key]: val })
-  }
-  signUp = async () => {
-    const { firstname,lastname,username, password, email, phone_number} = this.state
-    try {
-      // here place your signup logic
-      console.log('user successfully signed up!: ')
-    } catch (err) {
-      console.log('error signing up: ', err)
+        };
+        this.handleSubmit= this.handleSubmit.bind(this);
+        this.handleChange = this.handleChange.bind(this);
     }
-  }
- 
-  render() {
-    return (
-      <View style={styles.container}>
-        <TextInput
-          style={styles.input}
-          placeholder='First name'
-          autoCapitalize="none"
-          placeholderTextColor='white'
-          onChangeText={val => this.onChangeText('firstname', val)}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder='Last name'
-          autoCapitalize="none"
-          placeholderTextColor='white'
-          onChangeText={val => this.onChangeText('lastname', val)}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder='Username'
-          autoCapitalize="none"
-          placeholderTextColor='white'
-          onChangeText={val => this.onChangeText('username', val)}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder='Password'
-          secureTextEntry={true}
-          autoCapitalize="none"
-          placeholderTextColor='white'
-          onChangeText={val => this.onChangeText('password', val)}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder='Email'
-          autoCapitalize="none"
-          placeholderTextColor='white'
-          onChangeText={val => this.onChangeText('email', val)}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder='Phone Number'
-          autoCapitalize="none"
-          placeholderTextColor='white'
-          onChangeText={val => this.onChangeText('phone_number', val)}
-        />
-        <Button
-          title='Sign Up'
-          onPress={this.signUp}
-        />
-      </View>
-    )
-  }
-}
+        handleChange(event){
+           this.setState({[event.target.name]: event.target.value});
+        }
+        handleSubmit(event){
+            console.log("Your registration has been submitted")
+            event.preventDefault();
+        }
+    render(){
+        
+        return (
+            
+            <form class = "ui middle aligned center aligned grid">
+                   <div class = "four wide column">
+                    <h2 class = "ui teal iamage header">
+                        <img src = "https://cdn6.f-cdn.com/contestentries/93331/11758337/53e3cbdfd0c56_thumb900.jpg" class = "image"></img>
+                       <div class = "content">Sign-up to your account</div>
+                    </h2>
+                    <form class = "ui large form">
+                        <div class = "ui stacked segment">
+                           <div class= "field" onSubmit={this.handleSubmit}>
+                                   
+                    <input type="text" 
+                    name = "First Name" 
+                    placeholder="First Name" 
+                    value = {this.state.firstname} 
+                    onChange ={this.handleChange} 
+                    required/>
+                
+                    
+                    <input type="text" 
+                    name = "Last Name" 
+                    placeholder="Last Name" 
+                    value = {this.state.lastname} 
+                    onChange ={this.handleChange} 
+                    required/>
 
-const styles = StyleSheet.create({
-  input: {
-    width: 350,
-    height: 55,
-    backgroundColor: '#42A5F5',
-    margin: 10,
-    padding: 8,
-    color: 'white',
-    borderRadius: 14,
-    fontSize: 18,
-    fontWeight: '500',
-  },
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
-  }
-})
+                    <input type="number" 
+                    name = " Age " 
+                    placeholder=" Age" 
+                    value = {this.state.age} 
+                    onChange ={this.handleChange} 
+                    required/>
+                   
+                    
+                    
+                    <input type="text" 
+                    name = " email " 
+                    placeholder=" Email" 
+                    value = {this.state.email} 
+                    onChange ={this.handleChange} 
+                    required/>
+                                     
+                    
+                    <input type="text" 
+                    name = " password " 
+                    placeholder=" Password" 
+                    value = {this.state.password} 
+                    onChange ={this.handleChange} 
+                    required/>
+    
+                    <input type="text" 
+                    name = " password confirmation " 
+                    placeholder=" Password confirmation" 
+                    value = {this.state.password} 
+                    onChange ={this.handleChange} 
+                    required/>
+                    <button class="ui fluid large teal submit button" type='submit'> Register</button>
+                     </div>
+                           </div>
+                           <div class="ui message">
+                        Already have an account? <a href="#">Sign In</a>
+                          </div>
+                    </form>
+                      
+                    
+                    
+                     
+                  </div>
+                
+           </form>
+
+        );  }
+    };
+
