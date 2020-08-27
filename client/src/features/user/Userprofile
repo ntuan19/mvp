@@ -1,0 +1,115 @@
+import React from 'react';
+import { Container,Form ,Button} from 'semantic-ui-react';
+import DefaultUserPic from "  ";
+import axios from 'axios'
+
+export class UserProfile extends React.Component {
+    constructor(props){
+        super(props);
+        this.state={
+            email:this.props.email,
+            firstname: this.props.firstname,
+            lastname: this.props.lastname,
+            age: this.props.age,
+            profileImage:this.props.profileImage,
+            uploadedFile:null
+        }
+    }
+
+    fetchUserDetails=(email)=>{
+        console.log(email);
+        axios.get("/"+email,{
+            headers: {
+                "content-type": "application/json"
+              }
+        }).then(res=>{
+            console.log(res);
+            this.setState({email:res.data.results[0].email});
+            this.setState({lastname:res.data.results[0].lastname});
+            this.setState({firstname:res.data.results[0].firstname});         
+            this.setState({age:res.data.results[0].age});
+            this.setState({profileImage:res.data.results[0].profileImage})
+        })
+        .catch(err=>console.log(err))
+    }
+
+    changeProfileImage=(event)=>{
+       
+        this.setState({uploadedFile:event.target.files[0]});
+    }
+
+    UpdateProfileHandler=(e)=>{
+        e.preventDefault();
+        //create object of form data
+        const formData=new FormData();
+        formData.append("profileImage",this.state.uploadedFile);
+
+
+        //update-profile
+        axios.post("",formData,{
+            headers: {
+                "content-type": "application/json"
+              }
+        }).then(res=>{
+            console.log(res);
+           this.setState({profileImage:res.data.results.profileImage});
+        })
+        .catch(err=>console.log(err))
+    }
+
+
+    componentDidMount(){
+     this.fetchUserDetails(this.state.email);
+    }
+
+render(){
+
+    if(this.state.profileImage){
+        var imagestr=this.state.profileImage;
+        imagestr = imagestr.replace("public/", "");
+        var profilePic=""+imagestr;
+    }else{
+         profilePic=DefaultUserPic;
+    }
+
+    return (
+        <Container>
+        
+       <div class = "ui grid">
+       <img src={profilePic} alt="profils pic" />
+       </div>
+        <div class = "ui gird">
+            <h1>User Profile</h1>
+            <Form className="form">     
+  <Form.Group controlId="formCategory1">
+    <Form.Label>Name</Form.Label>
+    <Form.Control type="text" defaultValue={this.state.firstname}/>
+  
+  </Form.Group>
+  <Form.Group controlId="formCategory2">
+    <Form.Label>Email</Form.Label>
+    <Form.Control type="email" defaultValue={this.state.email} />
+  
+  </Form.Group>
+  <Form.Group controlId="formCategory2">
+    <Form.Label>Age</Form.Label>
+    <Form.Control type="email" defaultValue={this.state.age} />
+  
+  </Form.Group>
+ 
+  <Form.Group controlId="formCategory4">
+    <Form.Label>Profile Image</Form.Label>
+    <Form.Control type="file" name="profileImage" onChange={this.changeProfileImage}/>
+    </Form.Group>
+  <Button variant="primary" onClick={this.UpdateProfileHandler}>Update Profile</Button>
+  </Form>
+   </div>
+
+
+        </Container>
+    )
+}
+}
+
+   
+
